@@ -1,0 +1,16 @@
+PODS:
+  - XYCommonEngine (0.1.0)
+
+DEPENDENCIES:
+  - XYCommonEngine (from `../`)
+
+EXTERNAL SOURCES:
+  XYCommonEngine:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  XYCommonEngine: 26eb935c8a86c75f5acf9af62816d9daf2ee05f0
+
+PODFILE CHECKSUM: b288a4b6ef65bc22d2cfcabf7e8c5ea71532b789
+
+COCOAPODS: 1.9.2
