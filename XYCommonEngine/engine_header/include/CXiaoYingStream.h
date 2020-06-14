@@ -39,8 +39,6 @@
 
 - (MDWord) GetBGColor;           
 
-- (MRESULT) setConfig : (MDWord) dwPropertyID
-                Value : (MVoid*)pValue;
 @end // CXiaoYingStream
 
 
