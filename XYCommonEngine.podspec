@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
+  s.version          = '0.1.2'
   s.name             = 'XYCommonEngine'
-  s.version          = '0.1.1'
   s.summary          = 'A short description of XYCommonEngine.'
 
 # This description is used to generate tags and improve search results.
@@ -37,9 +37,8 @@ TODO: Add long description of the pod here.
   s.libraries = 'iconv', 'c', 'c++', 'stdc++', 'z'
 
   s.frameworks = 'VideoToolbox', 'Webkit', 'Photos', 'ImageIO', 'QuartzCore', 'AssetsLibrary', 'CoreGraphics', 'SceneKit', 'AudioToolbox'
- 
+
   s.vendored_frameworks = 'XYCommonEngine/engine_frameworks/WebP.framework'
-  
   
   # s.resource_bundles = {
   #   'XYCommonEngine' => ['XYCommonEngine/Assets/*.png']

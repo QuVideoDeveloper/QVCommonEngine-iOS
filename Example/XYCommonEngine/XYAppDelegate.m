@@ -1,14 +1,14 @@
 //
-//  QVAppDelegate.m
+//  XYAppDelegate.m
 //  XYCommonEngine
 //
-//  Created by Sunshine on 06/14/2020.
-//  Copyright (c) 2020 Sunshine. All rights reserved.
+//  Created by leon0206 on 08/23/2019.
+//  Copyright (c) 2019 leon0206. All rights reserved.
 //
 
-#import "QVAppDelegate.h"
+#import "XYAppDelegate.h"
 
-@implementation QVAppDelegate
+@implementation XYAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

@@ -1,6 +1,6 @@
 # XYCommonEngine
 
-[![CI Status](https://img.shields.io/travis/Sunshine/XYCommonEngine.svg?style=flat)](https://travis-ci.org/Sunshine/XYCommonEngine)
+[![CI Status](https://img.shields.io/travis/leon0206/XYCommonEngine.svg?style=flat)](https://travis-ci.org/leon0206/XYCommonEngine)
 [![Version](https://img.shields.io/cocoapods/v/XYCommonEngine.svg?style=flat)](https://cocoapods.org/pods/XYCommonEngine)
 [![License](https://img.shields.io/cocoapods/l/XYCommonEngine.svg?style=flat)](https://cocoapods.org/pods/XYCommonEngine)
 [![Platform](https://img.shields.io/cocoapods/p/XYCommonEngine.svg?style=flat)](https://cocoapods.org/pods/XYCommonEngine)
@@ -22,7 +22,7 @@ pod 'XYCommonEngine'
 
 ## Author
 
-Sunshine, cheng.xia@quvideo.com
+leon0206, zitao.li@quvideo.com
 
 ## License
 
