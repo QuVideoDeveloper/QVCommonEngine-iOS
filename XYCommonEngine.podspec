@@ -36,7 +36,7 @@ TODO: Add long description of the pod here.
  
   s.libraries = 'iconv', 'c', 'c++', 'stdc++', 'z'
 
-  s.frameworks = 'VideoToolbox', 'Webkit', 'Photos', 'ImageIO', 'QuartzCore', 'AssetsLibrary', 'CoreGraphics', 'SceneKit', 'AudioToolbox'
+  s.frameworks = 'VideoToolbox', 'Webkit', 'Photos', 'ImageIO', 'QuartzCore', 'AssetsLibrary', 'CoreGraphics', 'SceneKit', 'AudioToolbox', 'QuartzCore', 'CoreMedia'
 
   s.vendored_frameworks = 'XYCommonEngine/engine_frameworks/WebP.framework'
   
