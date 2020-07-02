@@ -456,6 +456,8 @@ MRESULT AMVE_StyleGetEffectPreviewInfo(MHandle hStyle, QEVT_EFFECT_PREVIEW_INFO 
 MRESULT AMVE_StylePasterGetThemeMusicTempIDs(MHandle hStyle, MInt64 ** ppArrayTemIDs, MDWord * pArraySize);
 
 MBool AMVE_StyleBubbleIsAdujestAlpha(MHandle hSessionCtx, MInt64 llTemplate, MSIZE bgSize);//判断字幕模板能不能调节alpha
+
+MRESULT AMVE_StyleGetTransformType(MHandle hStyle, MDWord* pType);
 #ifdef __cplusplus
 }
 #endif

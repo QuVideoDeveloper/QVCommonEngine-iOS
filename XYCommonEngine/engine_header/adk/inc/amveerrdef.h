@@ -324,6 +324,8 @@
 #define QVET_ERR_MOTIONTILE_PARSER_BASE (QVET_ERR_BASE+0x000BA000)		//0x008BA000 motiontileparser.cpp
 #define QVET_ERR_MESHWARP_BASE		    (QVET_ERR_BASE+0x000BB000)		//0x008BB000 meshwarp.cpp
 #define QVET_ERR_MESHWARP_PARSER_BASE	(QVET_ERR_BASE+0x000BC000)		//0x008BC000 meshwarpparser.cpp
+#define QVET_ERR_SABER_BASE		        (QVET_ERR_BASE+0x000BD000)		//0x008BD000 etsaberstream.cpp
+#define QVET_ERR_SABER_PARSER_BASE	    (QVET_ERR_BASE+0x000BE000)		//0x008BE000 etsaberparser.cpp
 #define QVET_ERR_PSSCATTEROS_BASE		(QVET_ERR_BASE+0x000BF000)		//0x008BF000 etparticlescatter.cpp
 /*
 * Error Definition Zone for FilePackage Tools

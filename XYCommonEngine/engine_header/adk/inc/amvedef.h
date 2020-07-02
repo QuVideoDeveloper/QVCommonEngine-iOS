@@ -19,6 +19,7 @@
 #include "amimageprocess.h"
 
 
+
 #ifndef AMVE_MAXPATH
 	#if defined (_LINUX_) || (__IPHONE__)
 		#define AMVE_MAXPATH 1024
@@ -348,6 +349,12 @@
 #define AMVE_PROP_EFFECT_TEXT_ADV_STYLE					(AMVE_PROP_EFFECT_BASE+222)
 //高级字幕属性激活标志
 #define AMVE_PROP_EFFECT_TEXT_ADV_FLAG					(AMVE_PROP_EFFECT_BASE+223)
+#define AMVE_PROP_EFFECT_VIDEO_FRAME_CROP_REGION 		(AMVE_PROP_EFFECT_BASE+224)
+//subeffect应用模式
+#define AMVE_PROP_EFFECT_SUB_MODE						(AMVE_PROP_EFFECT_BASE+225)
+//effect的transform类型
+#define AMVE_PROP_EFFECT_TRANSFORM_TYPE					(AMVE_PROP_EFFECT_BASE+226)
+
 
 #define AVME_EFFECT_SUB_ITEM_TYPE_BASE                   0
 #define AVME_EFFECT_SUB_ITEM_TYPE_CHROMA                 (AVME_EFFECT_SUB_ITEM_TYPE_BASE + 1)
@@ -476,6 +483,7 @@
 #define AMVE_PROP_CLIP_EQ_BAND_VALUE                   (AMVE_PROP_CLIP_BASE+65)  //设置EQ增益
 #define AMVE_PROP_CLIP_EQ_BAND_FREQUENCY               (AMVE_PROP_CLIP_BASE+66) //获取频率分段
 #define AMVE_PROP_CLIP_EQ_BAND_VALUE_LIST              (AMVE_PROP_CLIP_BASE+67) //获取EQ增益列表
+#define AMVE_PROP_CLIP_ENABLE_LOOP_MODE                 (AMVE_PROP_CLIP_BASE+68) //是否开启clip 循环模式
 
 #define AMVE_PROP_CLIP_REVERSE_SOURCE_CLEAR            (AMVE_PROP_CLIP_BASE+70) //清除到放源
 //每个cilp对象的唯一id,AMVE_PROP_CLIP_UNIQUE_IDENTIFIER,可用来在storyboard中获取该id对应的clip对象
@@ -483,6 +491,8 @@
 #define AMVE_PROP_CLIP_UUID							   (AMVE_PROP_CLIP_BASE+71)
 //该属性用于音频倒放
 #define AMVE_PROP_CLIP_INVERSE_PLAY_AUDIO_FLAG         (AMVE_PROP_CLIP_BASE+72)
+//该属性用于将单独的audio pitch从变速时的audio pitch分离,使用方法可以参照AMVE_PROP_CLIP_AUDIO_PITCH_DELTA
+#define AMVE_PROP_CLIP_AUDIO_PITCH_VALUE			   (AMVE_PROP_CLIP_BASE+73)	//used to modify the audio pitch of clip
 
 
 //constants used to identify the property for storyboard
@@ -515,6 +525,7 @@
 	AMVE_THEME_FILTER_MODE_OVERLAY
 */
 #define AMVE_PROP_STORYBOARD_THEME_FILTER_MODE		   (AMVE_PROP_STORYBOARD_BASE+23)
+#define AMVE_PROP_STORYBOARD_AUDIO_PITCH_VALUE         (AMVE_PROP_STORYBOARD_BASE+24) //Storyboard audio pitch value,data type is float 
 
 
 //constants used to identify the property for SlideShow
@@ -662,6 +673,7 @@
 #define AMVE_AUDIOFORMAT_AAC_HE						   0X0000000C
 #define AMVE_AUDIOFORMAT_AAC_HE_V2					   0X0000000D
 #define AMVE_AUDIOFORMAT_PCM                           0x0000000E
+#define AMVE_AUDIOFORMAT_WAV                           0x0000000F
 #define AMVE_AUDIOFORMAT_AUTO                          AMVE_AUDIOFORMAT_UNKNOWN
 
 //constants used to identify the track type
@@ -1036,6 +1048,7 @@
 #define AMVE_SUB_EFFECT_APPLY_MODE_EFFECT            1
 #define AMVE_SUB_EFFECT_APPLY_MODE_MOTION_TITLE      2
 #define AMVE_SUB_EFFECT_APPLY_MODE_MIX				 3
+
 
 
 #define AMVE_EFFECT_REGION_ALIGN_MODE_DEFALUT               0
@@ -2766,6 +2779,26 @@ typedef struct __tagQVET_AR_INFO
 }QVET_AR_INFO;
 
 
+typedef struct _tagQVET_TIME_DETAIL_ITEM
+{
+	MDWord 	dwStart;
+	MDWord 	dwLength;
+	MLong	lInterVal;
+	MLong	lSingleTime;
+}QVET_TIME_DETAIL_ITEM;
+
+typedef struct _tagQVET_TIME_DETAIL
+{
+	MDWord 	dwItemCount;
+	QVET_TIME_DETAIL_ITEM* pItemList;
+}QVET_TIME_DETAIL;
+
+typedef struct _tagQVET_SOURSE_TIME_INFO
+{
+	MDWord	dwDetailCount;
+	QVET_TIME_DETAIL* pDetailList;
+}QVET_SOURSE_TIME_INFO;
+
 typedef struct
 {
     MInt64 ID;
@@ -2774,6 +2807,8 @@ typedef struct
 	MSIZE viewSize; //该场景的view size
 	MDWord* pdwPreviewPos; //preview position in this scene
 	MRECT* pRegion; //万分比表示源在场景中的区域
+	MSIZE* pSizeInfo;
+	QVET_SOURSE_TIME_INFO* pSourseTimeInfo ;
 }QVET_THEME_SCECFG_ITEM;
 
 typedef struct
