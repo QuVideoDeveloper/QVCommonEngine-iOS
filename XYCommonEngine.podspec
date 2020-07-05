@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.version          = '0.9.2'
+  s.version          = '0.9.3'
   s.name             = 'XYCommonEngine'
   s.summary          = 'A short description of XYCommonEngine.'
 
