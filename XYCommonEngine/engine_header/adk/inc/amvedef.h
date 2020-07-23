@@ -354,6 +354,13 @@
 #define AMVE_PROP_EFFECT_SUB_MODE						(AMVE_PROP_EFFECT_BASE+225)
 //effect的transform类型
 #define AMVE_PROP_EFFECT_TRANSFORM_TYPE					(AMVE_PROP_EFFECT_BASE+226)
+//字幕背景属性
+#define AMVE_PROP_EFFECT_TEXT_BOARD_CONFIG				(AMVE_PROP_EFFECT_BASE+227)
+
+#define AMVE_PROP_EFFECT_3D_TRANSFORM_VALUE					(AMVE_PROP_EFFECT_BASE+228)
+#define AMVE_PROP_EFFECT_3D_TRANSFORM_MODE					(AMVE_PROP_EFFECT_BASE+229)
+#define AVME_PROP_EFFECT_KEYFRAME_COMMON_DATA				(AMVE_PROP_EFFECT_BASE+230)
+#define AVME_PROP_EFFECT_KEYFRAME_COMMON_LIST				(AMVE_PROP_EFFECT_BASE+231)
 
 
 #define AVME_EFFECT_SUB_ITEM_TYPE_BASE                   0
@@ -491,9 +498,9 @@
 #define AMVE_PROP_CLIP_UUID							   (AMVE_PROP_CLIP_BASE+71)
 //该属性用于音频倒放
 #define AMVE_PROP_CLIP_INVERSE_PLAY_AUDIO_FLAG         (AMVE_PROP_CLIP_BASE+72)
-//该属性用于将单独的audio pitch从变速时的audio pitch分离,使用方法可以参照AMVE_PROP_CLIP_AUDIO_PITCH_DELTA
-#define AMVE_PROP_CLIP_AUDIO_PITCH_VALUE			   (AMVE_PROP_CLIP_BASE+73)	//used to modify the audio pitch of clip
 
+//该属性用于变速时是否进行变调的判断
+#define AMVE_PROP_CLIP_IS_TIME_SCALE_USE_AUDIO_PITCH   (AMVE_PROP_CLIP_BASE+73)
 
 //constants used to identify the property for storyboard
 #define AMVE_PROP_STORYBOARD_BASE                      0X00004000
@@ -525,7 +532,9 @@
 	AMVE_THEME_FILTER_MODE_OVERLAY
 */
 #define AMVE_PROP_STORYBOARD_THEME_FILTER_MODE		   (AMVE_PROP_STORYBOARD_BASE+23)
-#define AMVE_PROP_STORYBOARD_AUDIO_PITCH_VALUE         (AMVE_PROP_STORYBOARD_BASE+24) //Storyboard audio pitch value,data type is float 
+//该属性用于变速时是否进行变调的判断
+#define AMVE_PROP_STORYBOARD_IS_TIME_SCALE_USE_AUDIO_PITCH (AMVE_PROP_STORYBOARD_BASE+24)
+#define AMVE_PROP_STORYBOARD_STUFF_CLIP_FPS            (AMVE_PROP_STORYBOARD_BASE+25)
 
 
 //constants used to identify the property for SlideShow
@@ -2518,6 +2527,14 @@ typedef struct __tagQVET_KEYFRAME_TRANSFORM_EXTINFO
 } QVET_KEYFRAME_TRANSFORM_EXTINFO;
 
 
+
+typedef struct __tagQVET_KEYFRAME_TRANSFORM_FLOAT_EXTINFO
+{
+	MPOINT_FLOAT front;//当前VALUE点的左侧
+	MPOINT_FLOAT back;//当前VALUE点的右侧
+	MBool enabled;//是否应用
+} QVET_KEYFRAME_TRANSFORM_FLOAT_EXTINFO;
+
 typedef struct __tagQVET_KEYFRAME_EASINGINFO
 {
 	MLong id;//用于区分预设曲线和自定义曲线
@@ -2717,12 +2734,13 @@ typedef struct __tagQVET_KEYFRAME_UNIFORM_VALUE
 {
 	MDWord dwMethod;
 	MFloat ts;
-	MFloat value;
+	MFloat value; 
 	MFloat fOffetValue;// is realVale = fOffetValue + value
 	MInt64 lKeylineTemplateID;
-	QVET_KEYFRAME_TRANSFORM_EXTINFO extInfo; //Bezier曲线插值参数
+	MDWord dwOffsetOpcodeType;//指定了fOffetValue + - * /, 相对于 fValue；
+	QVET_KEYFRAME_TRANSFORM_FLOAT_EXTINFO extInfo; //Bezier曲线插值参数
 	QVET_KEYFRAME_EASINGINFO easingInfo; //缓动曲线参数
-}QVET_KEYFRAME_UNIFORM_VALUE;
+}QVET_KEYFRAME_UNIFORM_VALUE, QVET_KEYFRAME_COMMON_VALUE;
 
 #define KEYFRAME_UNIFORM_NAME_LENGTH 128
 typedef struct __tagQVET_KEYFRAME_UNIFORM_DATA
@@ -3232,12 +3250,6 @@ typedef struct __QVET_EQ_BAND_FREQUENCY
 	const MDouble * pArrayBandFrequency;
 }QVET_EQ_BAND_FREQUENCY;
 
-typedef struct
-{
-	MDWord dwCount;
-	MInt64 *pllTemplateID;
-}QVET_TEMPLATE_ID_ARRAY;
-
 typedef enum _tag_qv_color_type {
     COLOR_TYPE_NONE = 0,
     COLOR_TYPE_BLACK,
@@ -3257,5 +3269,58 @@ typedef struct
 	MVoid** pSubRangeList; //std::vector<AMVE_POSITION_RANGE_TYPE>*指针,为了防止出现编译问题，这里用MVoid**
 }QVET_SLSH_SCENE_SUB_SOURCE_RANGE;
 
+typedef enum _tagQVET_KEYFRAME_3D_TRANSFORM_TYPE
+{
+	KEY_FRMAE_3D_TYPE_SCALE_X = 0,
+	KEY_FRMAE_3D_TYPE_SCALE_Y = 1,
+	KEY_FRMAE_3D_TYPE_SCALE_Z = 2,
+
+	KEY_FRMAE_3D_TYPE_SHIFT_X = 3,
+	KEY_FRMAE_3D_TYPE_SHIFT_Y = 4,
+	KEY_FRMAE_3D_TYPE_SHIFT_Z = 5,
+
+	KEY_FRMAE_3D_TYPE_ANGLE_X = 6,
+	KEY_FRMAE_3D_TYPE_ANGLE_Y = 7,
+	KEY_FRMAE_3D_TYPE_ANGLE_Z = 8,
+
+	KEY_FRMAE_3D_TYPE_ANCHOR_X = 9,
+	KEY_FRMAE_3D_TYPE_ANCHOR_Y = 10,
+	KEY_FRMAE_3D_TYPE_ANCHOR_Z = 11,
+	KEY_FRMAE_3D_TYPE_OVER = 12,
+}EU_KEYFRAME_3D_TRANSFORM_TYPE;
+typedef enum _tagQVET_KEYFRAME_TRANSFORM_COMMON_OFFSET_TYPE
+{
+	KEYFRAME_TRANSFORM_COMMON_OFFSET_TYPE_PLUS = 0,//相对offset 做加法操作
+	KEYFRAME_TRANSFORM_COMMON_OFFSET_TYPE_MUL =  1//相对offset 做乘法操作
+}EU_KEYFRAME_TRANSFORM_COMMON_OFFSET_TYPE;
+typedef struct
+{
+	MFloat x;	/*!< x coordinate */
+	MFloat y;	/*!< y coordinate */
+	MFloat z;	/*!< z coordinate */
+} QVET_VECTOR_3;
+
+typedef struct
+{
+	QVET_VECTOR_3 scale;
+	QVET_VECTOR_3 shift;
+	QVET_VECTOR_3 angle;
+	QVET_VECTOR_3 anchor;
+} QVET_3D_TRANSFORM;
+
+
+
+typedef struct _tagQVET_KEYFRAME_TRANSFORM_COMMON_DATA
+{
+	MLong lKeyValue;
+	MDWord size;
+	QVET_KEYFRAME_COMMON_VALUE *values;
+}QVET_KEYFRAME_COMMON_DATA;
+
+typedef struct _tagQVET_KEYFRAME_TRANSFORM_COMMON_DATA_LIST
+{
+	MDWord size;
+	QVET_KEYFRAME_COMMON_DATA *values;
+}QVET_KEYFRAME_COMMON_DATA_LIST;
 
 #endif //_AMVE_DEF_H_
