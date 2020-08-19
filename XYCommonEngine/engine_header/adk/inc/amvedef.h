@@ -94,7 +94,6 @@
 
 
 
-
 //Constants used to identify the media type for clip's source
 #define AMVE_CLIP_TYPE_BASE                            0X00000000
 #define AMVE_VIDEO_CLIP                                (AMVE_CLIP_TYPE_BASE+1)
@@ -349,7 +348,8 @@
 #define AMVE_PROP_EFFECT_TEXT_ADV_STYLE					(AMVE_PROP_EFFECT_BASE+222)
 //高级字幕属性激活标志
 #define AMVE_PROP_EFFECT_TEXT_ADV_FLAG					(AMVE_PROP_EFFECT_BASE+223)
-#define AMVE_PROP_EFFECT_VIDEO_FRAME_CROP_REGION 		(AMVE_PROP_EFFECT_BASE+224)
+
+#define AMVE_PROP_EFFECT_VIDEO_FRAME_CROP_REGION 					(AMVE_PROP_EFFECT_BASE+224)
 //subeffect应用模式
 #define AMVE_PROP_EFFECT_SUB_MODE						(AMVE_PROP_EFFECT_BASE+225)
 //effect的transform类型
@@ -361,6 +361,9 @@
 #define AMVE_PROP_EFFECT_3D_TRANSFORM_MODE					(AMVE_PROP_EFFECT_BASE+229)
 #define AVME_PROP_EFFECT_KEYFRAME_COMMON_DATA				(AMVE_PROP_EFFECT_BASE+230)
 #define AVME_PROP_EFFECT_KEYFRAME_COMMON_LIST				(AMVE_PROP_EFFECT_BASE+231)
+
+#define AMVE_PROP_EFFECT_SEG_MASK                           (AMVE_PROP_EFFECT_BASE+234)
+#define AVME_PROP_EFFECT_SUB_EFFECT_DISABLE 				(AMVE_PROP_EFFECT_BASE+236)//用于是否关闭插件，此作用画中画上的subeffect
 
 
 #define AVME_EFFECT_SUB_ITEM_TYPE_BASE                   0
@@ -501,6 +504,8 @@
 
 //该属性用于变速时是否进行变调的判断
 #define AMVE_PROP_CLIP_IS_TIME_SCALE_USE_AUDIO_PITCH   (AMVE_PROP_CLIP_BASE+73)
+#define AMVE_PROP_CLIP_SEG_MASK                        (AMVE_PROP_CLIP_BASE+75) 
+
 
 //constants used to identify the property for storyboard
 #define AMVE_PROP_STORYBOARD_BASE                      0X00004000
@@ -586,7 +591,6 @@
 #define AMVE_PROP_PLAYER_STREAM_FRAME_SIZE             (AMVE_PROP_PLAYER_BASE+6)
 #define AMVE_PROP_PLAYER_CALLBACK_DELTA				   (AMVE_PROP_PLAYER_BASE+7)
 #define AMVE_PROP_PLAYER_STREAM_DURATION               (AMVE_PROP_PLAYER_BASE+8)
-
 
 
 
@@ -965,20 +969,26 @@
 #define AMVE_H264_PROFILE_BASELINE                      0x1
 #define AMVE_H264_PROFILE_MAIN                          0x2
 #define AMVE_H264_PROFILE_HIGH                          0x3
+#define AMVE_HEVC_PROFILE_MAIN                          0x10
+#define AMVE_HEVC_PROFILE_MAIN10                        0x11
 
-#define AMVE_H264_LEVEL_UNKNOW                           0
-#define AMVE_H264_LEVEL_30                               30
-#define AMVE_H264_LEVEL_31                               31
-#define AMVE_H264_LEVEL_40                               40
-#define AMVE_H264_LEVEL_41                               41
+//AVC level
+#define AMVE_H264_LEVEL_UNKNOW                          0
+#define AMVE_H264_LEVEL_30                              30
+#define AMVE_H264_LEVEL_31                              31
+#define AMVE_H264_LEVEL_40                              40
+#define AMVE_H264_LEVEL_41                              41
 
-#define AMVE_VIDEO_ENC_BITRATE_MODE_LOW                  0x0
-#define AMVE_VIDEO_ENC_BITRATE_MODE_HIGH                 0x1
-#define AMVE_VIDEO_ENC_BITRATE_MODE_VERY_LOW             0x2
+//HEVC level
+#define AMVE_HEVC_LEVEL_AUTO							1
 
-#define QVET_TIME_POSITION_ALIGNMENT_MODE_START		0
-#define QVET_TIME_POSITION_ALIGNMENT_MODE_END		1
-#define QVET_TIME_POSITION_ALIGNMENT_MODE_MIDDLE	2
+#define AMVE_VIDEO_ENC_BITRATE_MODE_LOW                 0x0
+#define AMVE_VIDEO_ENC_BITRATE_MODE_HIGH                0x1
+#define AMVE_VIDEO_ENC_BITRATE_MODE_VERY_LOW            0x2
+
+#define QVET_TIME_POSITION_ALIGNMENT_MODE_START			0
+#define QVET_TIME_POSITION_ALIGNMENT_MODE_END			1
+#define QVET_TIME_POSITION_ALIGNMENT_MODE_MIDDLE		2
 
 #define QVET_REFRESH_STREAM_OPCODE_ADD_EFFECT					1
 #define QVET_REFRESH_STREAM_OPCODE_UPDATE_EFFECT				2
@@ -1057,7 +1067,6 @@
 #define AMVE_SUB_EFFECT_APPLY_MODE_EFFECT            1
 #define AMVE_SUB_EFFECT_APPLY_MODE_MOTION_TITLE      2
 #define AMVE_SUB_EFFECT_APPLY_MODE_MIX				 3
-
 
 
 #define AMVE_EFFECT_REGION_ALIGN_MODE_DEFALUT               0
@@ -1561,7 +1570,7 @@ typedef struct _tagAMVE_PRODUCER_PARAM_TYPE
 	MTChar *wmCode;
     MDWord dwMaxExpFPS; //允许导出的最高fps,用于控制导出时跳帧
     MDWord dwKeyframeInterval; //关键帧间隔，单位ms
-	MBool  bConstRateOpen;  //是否开启固定帧率（导致某些情况下文件大小增长	
+	MBool  bConstRateOpen;  //是否开启固定帧率（导致某些情况下文件大小增长）
 	MBool  bHasBFrame;      //是否输出B帧
     MBool  bNoNetWork;      //为MTrue表示把MOOV数据写入文件尾部。MOOV数据默认会写在文件头部，这样网络播放时可以直接seek,但写在头部会在关闭文件时多消耗时间，100M文件大约消耗4S
     MDWord dwBitrateMode;   //bit rate control mode
@@ -2179,6 +2188,7 @@ typedef struct
 	MRECT rcCrop; //app设置下来 的crop区域
 	MRECT region; //源在场景中显示的区域,用于app点中
 	MBool bFaceAlign; //这个源是否需要人脸对齐
+	MBool bDigOutImage;//源是否需要进行抠像
 
 	union
 	{
@@ -2445,6 +2455,13 @@ typedef struct _tagQVET_FACEDT_UTILS_CONTEXT
 	MHandle hSessonContext;
 }QVET_FACEDT_UTILS_CONTEXT;
 
+
+typedef struct _tagQVET_SEGMENT_UTILS_CONTEXT
+{
+    MHandle hSegmentContext;
+	MHandle hAPPContext;
+	MHandle hSessonContext;
+}QVET_SEGMENT_UTILS_CONTEXT;
 
 
 typedef struct _tag_AMVE_FACE_EXPRESSION_INFO
@@ -3218,7 +3235,7 @@ typedef struct
 	MFloat fStartV;
 	MFloat fEndV;
 	MInt64 lTemplateID; //想使用的动效模板ID
-		AMVE_POSITION_RANGE_TYPE range; //占据在clip或者Effect上的range,暂且不搞什么分段的
+	AMVE_POSITION_RANGE_TYPE range; //占据在clip或者Effect上的range,暂且不搞什么分段的
 }QVET_KLII_WITH_USERDATA;
 
 typedef struct
