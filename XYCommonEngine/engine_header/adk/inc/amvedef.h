@@ -365,6 +365,7 @@
 
 #define AMVE_PROP_EFFECT_SEG_MASK                           (AMVE_PROP_EFFECT_BASE+234)
 #define AVME_PROP_EFFECT_SUB_EFFECT_DISABLE 				(AMVE_PROP_EFFECT_BASE+236)//用于是否关闭插件，此作用画中画上的subeffect
+#define AMVE_PROP_EFFECT_RESET_SEG_MASK                     (AMVE_PROP_EFFECT_BASE+237)
 
 
 #define AVME_EFFECT_SUB_ITEM_TYPE_BASE                   0
@@ -513,6 +514,8 @@
 #define AMVE_PROP_CLIP_CURVE_SRC_RANGE				   (AMVE_PROP_CLIP_BASE+77)
 //开启曲线变速时用来给app获取缩放后的时长
 #define AMVE_PROP_CLIP_CURVE_SCALE_RANGE			   (AMVE_PROP_CLIP_BASE+78)
+
+#define AMVE_PROP_CLIP_RESET_SEG_MASK                  (AMVE_PROP_CLIP_BASE+79)
 
 
 //constants used to identify the property for storyboard
@@ -2227,6 +2230,7 @@ typedef struct
 	MRECT region; //源在场景中显示的区域,用于app点中
 	MBool bFaceAlign; //这个源是否需要人脸对齐
 	MBool bDigOutImage;//源是否需要进行抠像
+    QVET_FRAME_VECTOR_3 fRotation; //表示每个源的旋转角度
 
 	union
 	{
@@ -2585,8 +2589,8 @@ typedef struct __tagQVET_KEYFRAME_TRANSFORM_EXTINFO
 
 typedef struct __tagQVET_KEYFRAME_TRANSFORM_FLOAT_EXTINFO
 {
-	MPOINT_FLOAT front;//当前VALUE点的左侧
-	MPOINT_FLOAT back;//当前VALUE点的右侧
+	MPOINT_DOUBLUE front;//当前VALUE点的左侧
+	MPOINT_DOUBLUE back;//当前VALUE点的右侧
 	MBool enabled;//是否应用
 } QVET_KEYFRAME_TRANSFORM_FLOAT_EXTINFO;
 
@@ -2789,7 +2793,7 @@ typedef struct __tagQVET_KEYFRAME_UNIFORM_VALUE
 {
 	MDWord dwMethod;
 	MFloat ts;
-	MFloat value; 
+	MDouble value; 
 	MFloat fOffetValue;// is realVale = fOffetValue + value
 	MInt64 lKeylineTemplateID;
 	MDWord dwOffsetOpcodeType;//指定了fOffetValue + - * /, 相对于 fValue；
@@ -2882,6 +2886,7 @@ typedef struct
 	MRECT* pRegion; //万分比表示源在场景中的区域
 	MSIZE* pSizeInfo;
 	QVET_SOURSE_TIME_INFO* pSourseTimeInfo ;
+    QVET_FRAME_VECTOR_3* pfRotation; //表示每个源的旋转角度
 }QVET_THEME_SCECFG_ITEM;
 
 typedef struct
