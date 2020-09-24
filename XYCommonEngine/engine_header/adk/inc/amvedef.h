@@ -362,6 +362,9 @@
 #define AMVE_PROP_EFFECT_3D_TRANSFORM_MODE					(AMVE_PROP_EFFECT_BASE+229)
 #define AVME_PROP_EFFECT_KEYFRAME_COMMON_DATA				(AMVE_PROP_EFFECT_BASE+230)
 #define AVME_PROP_EFFECT_KEYFRAME_COMMON_LIST				(AMVE_PROP_EFFECT_BASE+231)
+#define AMVE_PROP_EFFECT_ONSET_THRESH_HOLD                  (AMVE_PROP_EFFECT_BASE+232)
+#define AMVE_PROP_EFFECT_TIME_FACTOR                        (AMVE_PROP_EFFECT_BASE+233)
+
 
 #define AMVE_PROP_EFFECT_SEG_MASK                           (AMVE_PROP_EFFECT_BASE+234)
 #define AVME_PROP_EFFECT_SUB_EFFECT_DISABLE 				(AMVE_PROP_EFFECT_BASE+236)//用于是否关闭插件，此作用画中画上的subeffect
@@ -516,6 +519,9 @@
 #define AMVE_PROP_CLIP_CURVE_SCALE_RANGE			   (AMVE_PROP_CLIP_BASE+78)
 
 #define AMVE_PROP_CLIP_RESET_SEG_MASK                  (AMVE_PROP_CLIP_BASE+79)
+
+#define AMVE_PROP_CLIP_ONSET_PARAM                     (AMVE_PROP_CLIP_BASE+80) //Onset检测参数
+
 
 
 //constants used to identify the property for storyboard
@@ -3393,5 +3399,13 @@ typedef struct _tagQVET_KEYFRAME_TRANSFORM_COMMON_DATA_LIST
 	MDWord size;
 	QVET_KEYFRAME_COMMON_DATA *values;
 }QVET_KEYFRAME_COMMON_DATA_LIST;
+
+typedef struct
+{
+    MDWord dwOnsetMode;   //Onset mode QASP_ONSET_MODE_XXX
+    MFloat fThreshHold;   //Onset thresh hold
+    MDWord dwOnsetGap;    //Onset gap,ms
+}QVET_ONSET_DETECT_PARAM;
+
 
 #endif //_AMVE_DEF_H_

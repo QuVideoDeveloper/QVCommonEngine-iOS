@@ -176,6 +176,7 @@ MRESULT AMVE_SessionContextSetProp(MHandle hContext, MDWord dwPropId, MVoid* pDa
 MRESULT AMVE_SessionContextGetProp(MHandle hContext, MDWord dwPropId, MVoid* pData, MDWord* pdwSize);
 //获取引擎支持功能列表， std::vector<std::string>
 MRESULT AMVE_SessionContextGetEngineSupportList(MHandle hVecCtx);
+MBool   AMVE_SessionContextIsSupportByLicense(const MChar *pName);
 
 //The interfaces for clip
 MRESULT AMVE_ClipCreate(MHandle hSessionContext, AMVE_MEDIA_SOURCE_TYPE* pSource, MHandle* phClip); 
