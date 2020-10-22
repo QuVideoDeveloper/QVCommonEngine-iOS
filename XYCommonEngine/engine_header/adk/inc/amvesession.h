@@ -82,6 +82,8 @@ MRESULT AMVE_GetBubbleThumbnailByTemplate(MHandle hSessionCtx,
 //hVecList std::vector<std::string> 模板需要引擎具备哪些功能
 MRESULT AMVE_GetMaterialNeedEngineSupportList(const MChar *pszTemplatePath, MHandle hVecList);
 
+MRESULT AMVE_GetTemplateContentInfo(MHandle hSessionCtx, MInt64 llTemplateID, QVET_TEMPlATE_CONTENT_TYPE **ppTempalteInfo);
+
 #if WIN32
 		
 MRESULT AMVE_EffectThumbnailMgrCreate(MHandle *phThumbnailMgr,
@@ -378,6 +380,8 @@ MDWord AMVE_GetProjectVersion(MTChar* pszFilePath);
 
 
 MRESULT AMVE_GetTextAnimationThumbnail(MHandle hSessionContext,AMVE_TEXTANIMATION_SOURCE_TYPE* pTASource,MSIZE* pBGSize,MBITMAP* pBmp);
+
+MRESULT AMVE_RegisterRemainMemQueryCallBack(QVET_REMAIN_MEM_QUERY* pMemQuery);
 
 /*
     pBMP 输入的bitmap,颜色空间是rgba
