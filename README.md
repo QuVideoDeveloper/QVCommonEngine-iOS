@@ -22,7 +22,7 @@ pod 'XYCommonEngine'
 
 ## Author
 
-leon0206, zitao.li@quvideo.com
+cheng.xia@quvideo.com
 
 ## License
 
