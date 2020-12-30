@@ -92,8 +92,12 @@
 #define AMVE_PROP_CONTEXT_REMAIN_MEM_QUERY          (AMVE_PROP_CONTEXT_BASE+46) //剩余内存查询回调
 #define AMVE_PROP_CONTEXT_VIDEO_CONSTANT_FPS         	(AMVE_PROP_CONTEXT_BASE+47) //视频的最小帧率，帧率小于这个帧率会补帧
 #define AMVE_PROP_CONTEXT_SEGMENT_MODEL_FILE        (AMVE_PROP_CONTEXT_BASE+48) //分割算法模型文件路径
-
-
+#define AMVE_PROP_CONTEXT_CLEAR_FILE_CACHE        (AMVE_PROP_CONTEXT_BASE+49) //清楚指定文件路径的文件缓存 后边跟的参数是MChar *
+#define AMVE_PROP_CONTEXT_RENDER_MSAATYPE         (AMVE_PROP_CONTEXT_BASE+50)
+#define AMVE_PROP_CONTEXT_FACEDT_ADAPTER		  (AMVE_PROP_CONTEXT_BASE+60) //人脸表情组件代理句柄,目前只有ios平台需要配置	
+#define AMVE_PROP_CONTEXT_SEGMENT_ADAPTER		  (AMVE_PROP_CONTEXT_BASE+61) //分割组件代理句柄,目前只有ios平台需要配置
+#define AMVE_PROP_CONTEXT_SHOTDT_ADAPTER		  (AMVE_PROP_CONTEXT_BASE+62) //视频卡点检测代理句柄,目前只有ios平台需要配置	
+#define AMVE_PROP_CONTEXT_MULTIDT_ADAPTER		  (AMVE_PROP_CONTEXT_BASE+63) //目标检测算法代理句柄,目前只有ios平台需要配置	
 
 //Constants used to identify the media type for clip's source
 #define AMVE_CLIP_TYPE_BASE                            0X00000000
@@ -282,6 +286,8 @@
 #define AVME_PROP_EFFECT_INSTANT_VIDEO_REGION 			(AMVE_PROP_EFFECT_BASE+117)
 #define AVME_PROP_EFFECT_INSTANT_VIDEO_ROTATION 		(AMVE_PROP_EFFECT_BASE+118)
 
+
+
 #define AVME_PROP_EFFECT_KEYFRAME_MASK				    (AMVE_PROP_EFFECT_BASE+119)
 #define AVME_PROP_EFFECT_KEYFRAME_MASK_SET				(AMVE_PROP_EFFECT_BASE+120)
 #define AMVE_PROP_EFFECT_USER_EXP_TYPE                  (AMVE_PROP_EFFECT_BASE+121)
@@ -377,7 +383,11 @@
 #define AMVE_PROP_EFFECT_INVERSE_PLAY_AUDIO_FLAG            (AMVE_PROP_EFFECT_BASE+242)//画中画音频到放
 #define AMVE_PROP_EFFECT_INVERSE_PLAY_SOURCE_RANGE          (AMVE_PROP_EFFECT_BASE+243)//画中画到放range
 #define AMVE_PROP_EFFECT_TEMPLATE_CONTENT_INFO              (AMVE_PROP_EFFECT_BASE+244)//素材id无关中，获取模板里边业务相关的属性
-
+#define AMVE_PROP_EFFECT_TA_TYPE							(AMVE_PROP_EFFECT_BASE+245)//动画字幕模板的类型,目前包括单层和多层
+#define AMVE_PROP_EFFECT_DRAW_LAYER_DATA                    (AMVE_PROP_EFFECT_BASE+246)
+#define AMVE_PROP_EFFECT_DRAW_LAYER_LIST_COUNT              (AMVE_PROP_EFFECT_BASE+247)
+#define AMVE_PROP_EFFECT_DRAW_LAYER_RECORD_LIST_COUNT       (AMVE_PROP_EFFECT_BASE+248)
+#define AMVE_PROP_EFFECT_FILTER_DURATION                    (AMVE_PROP_EFFECT_BASE+249)
 
 #define AVME_EFFECT_SUB_ITEM_TYPE_BASE                   0
 #define AVME_EFFECT_SUB_ITEM_TYPE_CHROMA                 (AVME_EFFECT_SUB_ITEM_TYPE_BASE + 1)
@@ -616,6 +626,7 @@
 #define AMVE_PROP_PLAYER_STREAM_FRAME_SIZE             (AMVE_PROP_PLAYER_BASE+6)
 #define AMVE_PROP_PLAYER_CALLBACK_DELTA				   (AMVE_PROP_PLAYER_BASE+7)
 #define AMVE_PROP_PLAYER_STREAM_DURATION               (AMVE_PROP_PLAYER_BASE+8)
+#define AMVE_PROP_PLAYER_DISPLAY_TRANSFORM             (AMVE_PROP_PLAYER_BASE+9) //QVET_3D_TRANSFORM value
 
 
 
@@ -972,6 +983,7 @@
 #define AMVE_FACE_DT_LIB_TYPE_ARCSOFT_41                0x1
 #define AMVE_FACE_DT_LIB_TYPE_ARCSOFT_101               0x2
 
+#define AMVE_FACEDT_MAX_PASTER_COUNT                    6	//AE上单个paster层，最多几个贴纸。不需要多少，由于combo可以
 #define AMVE_FACEDT_MAX_FACE_COUNT                      4  //最多支持4张人脸
 #define AMVE_FACEDT_RESULT_POINT_COUNT                  106
 
@@ -983,6 +995,12 @@
 #define AMVE_FACEDT_EXPRESSION_TYPE_HEADSHAKE           4
 #define AMVE_FACEDT_EXPRESSION_TYPE_HEADNOD             5
 #define AMVE_FACEDT_EXPRESSION_TYPE_HEADSHAKE_NOD       6
+//人脸的小于11
+#define AMVE_APP_INPUT_EXPRESSION_TYPE_BEGIN            11
+#define AMVE_APP_INPUT_EXPRESSION_TYPE_CLICK            12
+
+#define AMVE_FACEDT_EXPRESSION_TYPE_RANDOM_SELECT		255 //通知APP随机选取下一个触发类型贴纸，当前这个不能是带触发的
+
 
 
 #define AMVE_FACEDT_EXPRESSION_PASTE_SHOW               0
@@ -1059,6 +1077,9 @@
 #define QVET_RENDER_API_Vulkan10                                0x00000040
 #define QVET_RENDER_API_D3D11                                   0x00000080
 
+// 抗锯齿类型
+#define QVET_RENDER_MSAATYPE_NO 			0x0			 // 无抗锯齿
+#define QVET_RENDER_MSAATYPE_X4 			0x1			 // 4倍抗锯齿
 
 #define QVET_TEXT_CHANGE_FLAG_MASK              0xffffffff
 #define QVET_TEXT_CHANGE_FLAG_ALIGN             0x00000001
@@ -1104,6 +1125,12 @@
 #define AMVE_THEME_FILTER_MODE_REPLACE						(0) //替换-将滤镜效果替换成主题里的滤镜 
 #define AMVE_THEME_FILTER_MODE_RETAIN						(1) //保留-原滤镜不变,不使用主题里的滤镜
 #define AMVE_THEME_FILTER_MODE_OVERLAY						(2) //叠加-将主题里的滤镜叠加到原滤镜上
+
+
+#define QVET_SCENE_PANZOOM_MODE_NONE                         0   //没有panzoom效果
+#define QVET_SCENE_PANZOOM_MODE_BLUR                         1   //模糊背景
+#define QVET_SCENE_PANZOOM_MODE_FILL                         2   //颜色填充
+#define QVET_SCENE_PANZOOM_MODE_TRANSPARENT                  3   //透明背景
 
 #define QVET_CHECK_VALID_RET(ret)   \
         if (ret) {                  \
@@ -1258,6 +1285,7 @@ typedef struct _tagQVET_RENDER_CONTEXT
 //	MDWord    dwOrientation;
 	MDWord    dwResampleMode;
 	MDWord	  dwRenderTarget;
+	MDWord 	  dwMSAAType;
 } QVET_RENDER_CONTEXT_TYPE;
 
 typedef struct _tagAMVE_VIDEO_INFO_TYPE
@@ -1913,6 +1941,9 @@ typedef struct __tag_BubbleTemplateInfo
 {
     MDWord dwVersion;
 	MFloat fRotation;
+	MFloat fRotationX;
+	MFloat fRotationY;
+	MFloat fRotationZ;
 	MCOLORREF clrBubble;//not used in IOS8.0
 	MRECT rcRegion;
 	MBool bIsAnimated;
@@ -2062,7 +2093,8 @@ typedef struct __tagQVET_SCENE_ELEMENT_INFO
 	MDWord dwAlignment;
 	MDWord dwShadeFrameID;
 	MDWord dwFitMode; //ATOM.ResampleModeFitIn = 1; ATOM.ResampleModeFitOut = 2;
-    MBool  bApplyPanzoom;
+    //MBool  bApplyPanzoom;
+    MDWord dwPanzoomMode;   //QVET_SCENE_PANZOOM_MODE_XXX
 	QVET_SCENE_ELEMENT_TIME time;
 	MBool bFaceAlign;  //表示这个源是否需要做人脸对齐
 	MDWord dwFreezeID;
@@ -2240,7 +2272,8 @@ typedef struct
 	QVET_TRANSFORM_PARAMETERS transformPara;
 	MDWord dwFrameWidth;
 	MDWord dwFrameHeight;
-	MBool bApplyPanzoom;
+	//MBool bApplyPanzoom;
+	MDWord dwPanzoomMode;
 	MBool bFitMethod;// false: fit-in, true: fit-out
 	MBool bCropFlag; //表示app是否设置了crop区域的flag
 	MRECT rcCrop; //app设置下来 的crop区域
@@ -2287,11 +2320,10 @@ typedef struct _tag_AMVE_EFFECT_ABFACE_INFO
     MDWord dwTotalCount;
 }AMVE_EFFECT_ABFACE_INFO;
 
-typedef struct _tag_AMVE_PASTER_FACIAL_INFO
+typedef struct _tag_AMVE_PASTER_ATTACH_INFO
 {
-    MBool bFollowFace;          //是否跟随人脸,有些人脸贴纸仅仅和表情有关,大小和位置与人脸无关
-    MDWord dwFdlibType;         // 0 SenceTime  1 Arcsoft
-    MFloat fAnchorPoint[3];    //Anchor point of paster
+	MDWord dwEftIndex;         //所在子Effect的index
+	MFloat fAnchorPoint[3];    //Anchor point of paster
     MDWord dwXPointNo;         //The point number of x axis refer to(0~105)
     MLong  lXOffset;          //The offset to x axis refer point in pixels
     MDWord dwYPointNo;         //The point number of y axis refer to(0~105)
@@ -2300,9 +2332,20 @@ typedef struct _tag_AMVE_PASTER_FACIAL_INFO
 	MSIZE  faceSize;
 	MSIZE  pasterSize;
 	MDWord dwAdjustPositionWay;
+}AMVE_PASTER_ATTACH_INFO;
+
+
+typedef struct _tag_AMVE_PASTER_FACIAL_INFO
+{
+    MBool bFollowFace;          //是否跟随人脸,有些人脸贴纸仅仅和表情有关,大小和位置与人脸无关
+    MDWord dwFdlibType;         // 0 SenceTime  1 Arcsoft
 	AMVE_EFFECT_EXPRESSION_INFO expressionInfo;
 	AMVE_EFFECT_ABFACE_INFO ABFaceInfo;
+
+	MDWord dwPasterCount;
+	AMVE_PASTER_ATTACH_INFO * pArrayPasterAttachInfo; //依附于人脸的每张贴纸的相关信息
 }AMVE_PASTER_FACIAL_INFO;
+
 
 typedef struct _tag_AMVE_FACIAL_PASTER_DATA_TYPE
 {
@@ -2360,6 +2403,9 @@ typedef struct
 	MDWord dwAlignment;
 	MDWord dwPosAlignment;
 	MDWord dwPreviewPos;
+	MFloat fRotationX;
+    MFloat fRotationY;
+    MFloat fRotationZ;
 	MTChar szDefaultText[QVET_BUBBLE_TEXT_MAX_LENGTH];
 	MDWord dwFontID;
 	MDWord dwParamID;
@@ -2385,9 +2431,9 @@ typedef struct _tag_QVET_FRAME_OBJECT_INFO
 
 typedef struct _tag_QVET_FRAME_SP_INFO
 {
-    QVET_FRAME_OBJECT_INFO objInfo; // node的长宽等信息
-	MRECTF textRect;   //文字在底图中所占区域,用归一化的比值
-	QVET_FRAME_TRANSFORM transform; // Node 在整个合层中的位置
+    QVET_FRAME_OBJECT_INFO objInfo; //!< node的长宽等信息
+	MRECTF textRect;   //!< 文字在底图中所占区域,用归一化的比值
+	QVET_FRAME_TRANSFORM transform; //!< Node 在整个合层中的位置
 }QVET_FRAME_SP_INFO;
 
 typedef struct
@@ -2522,6 +2568,12 @@ typedef struct _tagQVET_SEGMENT_UTILS_CONTEXT
 	MHandle hSessonContext;
 }QVET_SEGMENT_UTILS_CONTEXT;
 
+typedef struct _tagQVET_MULTIDETEC_UTILS_CONTEXT
+{
+	MHandle hMultiDetecContext;
+	MHandle hAPPContext;
+	MHandle hSessionContext;
+}QVET_MULTIDETEC_UTILS_CONTEXT;
 
 typedef struct _tag_AMVE_FACE_EXPRESSION_INFO
 {
@@ -2569,6 +2621,19 @@ typedef struct __tagQVET_TRAJECTORY_VALUE
 	MFloat rotation; //self-rotation angle around the object's center ——未启用
 	MRECT region; //与effect的PROP_VIDEO_REGION概念一致，对于只有"点"概念的对象，只需确保rect的中心与实际点一致即可。rect的size不重要
 }QVET_TRAJECTORY_VALUE;
+
+#define QVET_TRAJ_TYPE_NONE       0
+#define QVET_TRAJ_TYPE_LINE       1
+#define QVET_TRAJ_TYPE_RIPPLE     2
+
+#define QVET_TRAJ_RIPPLE_EVENT_NONE  0
+#define QVET_TRAJ_RIPPLE_EVENT_CLICK 1
+#define QVET_TRAJ_RIPPLE_EVENT_SLIDE 2
+
+#define QVET_TRAJ_RIPPLE_POINT_NONE  0
+#define QVET_TRAJ_RIPPLE_EVENT_HEAD  1
+#define QVET_TRAJ_RIPPLE_EVENT_TAIL  2
+
 
 
 #define QVET_TRAJECTORY_UPDATE_MODE_REPLACE				0 //不仅数据替换，老轨迹的属性也会替换
@@ -2905,6 +2970,7 @@ typedef struct
 	MSIZE* pSizeInfo;
 	QVET_SOURSE_TIME_INFO* pSourseTimeInfo ;
     QVET_FRAME_VECTOR_3* pfRotation; //表示每个源的旋转角度
+	MDWord* pdwContourApply; // 标记源是否要抠像
 }QVET_THEME_SCECFG_ITEM;
 
 typedef struct
@@ -3090,6 +3156,17 @@ typedef struct _tagEffectSubChormaProp
 }QVET_EFFECT_SUB_EFFECT_CHORMA_PROP;//画中画里的滤色功能的相关属性
 
 
+#define AMVE_APP_INPUT_EXPRESSION_STATE_NONE 0
+#define AMVE_APP_INPUT_EXPRESSION_STATE_TOUCH_ON 	        1  //持续触击
+#define AMVE_APP_INPUT_EXPRESSION_STATE_TOUCH_OFF           2  //持续无接触
+#define AMVE_APP_INPUT_EXPRESSION_STATE_TOUCH_ON_ONCE       3  //触发一次即关闭
+
+//APP输入触发事件需要传递的数据，后面还可能什么坐标啊之类的。或者变成什么链表存取连续输入等，目前没啥必要
+typedef struct _tagEffectAppInputExpValue
+{
+	MDWord dwExpType; //触发类型
+	MDWord dwState;   //触发状态，按需求定义 AMVE_APP_INPUT_EXPRESSION_STATE_XX
+}QVET_EFFECT_APP_INPUT_EXP_VALUE;
 
 
 
@@ -3429,9 +3506,42 @@ typedef struct
 	MBool      bIsPhoto;
 	MBool      bIsNeedFaceFeature;
 	MBool      bIsNeedSegment;
+	MBool      bIsDrawLayer;
 	MInt64     llSeqenceID;
 	MInt64     llReservedID;
 	MInt64     llSequenceSubID;
 }QVET_TEMPlATE_CONTENT_TYPE;
+enum CropType {
+	TOP_ALIGN = 0,
+	BOTTEM_ALIGN,
+	HEAD_ALIGN,
+	ANCHOR_ALIGN
+};
+
+/*** 图像预处理 ***/
+
+typedef struct _Geo {
+	int	x;			// 分割矩形左上角点位坐标
+	int y;
+
+	int width;		// 分割矩形宽
+	int height;		// 分割矩形高
+
+	int headWidth;	// 原图中人脸宽度
+
+	MPOINT	jaw;	// 下巴点位坐标
+} Geo;
+
+typedef struct _PreprocessArgs {
+	int			type;				// 处理类型
+	Geo			geo;				// 分割矩形框，点位等信息
+
+	int			targetWidth;		// 目标图像宽
+	int			targetHeight;		// 目标图像高
+	int			targetHeadSize;		// 目标图像中的人脸宽度
+
+	MPOINT		anchor;				// 设计师配置的锚点
+} PreprocessArgs;
+/*** end ***/
 
 #endif //_AMVE_DEF_H_

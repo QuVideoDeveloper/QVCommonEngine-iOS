@@ -382,51 +382,14 @@ static MRESULT QCamEngineModifyFrameRate(MDWord value, MVoid *handler, MV2Record
                      paramList: 1 node. It's NSNumber(int), whose value is QVAR_PLANE_DETECT_ORIENTATION_XXX defeined in libqvar.hpp
                      @return:   no XYCE_STATUS.pData is needed.
  
-                QCAM_OP_ADD_ARPEN
-                    Operation way: asynchronizaton
-                    paramList: 1 element. It's QARPenAddParam and refer to the definition for more info
-                    @return:   no XYCE_STATUS.pData is needed.
- 
-                QCAM_OP_REMOVE_ARPEN
-                    Operation way: asynchronizaton
-                    paramList: 1 element. It's NSNumber(int), which is the AR-pen ID when you add.
-                    @return:   no XYCE_STATUS.pData is needed.
-
-                QCAM_OP_REMOVE_ALL_ARPEN
-                    Operation way: asynchronizaton
-                    paramList: nil.
-                    @return:   no XYCE_STATUS.pData is needed.
- 
-                QCAM_OP_ARPEN_DRAW_BEGIN
-                    Operation way: asynchronizaton
-                    paramList:  2 elements.
-                                1st is the NSNumber(int), which is the AR-pen ID.
-                                2nd is the QPointFloat, wihch is the point you touch to the screen. The value is  normalized(0~1), and bases on screen coordination.
-                    @return:   no XYCE_STATUS.pData is needed.
-
-                QCAM_OP_ARPEN_DRAW
-                    Operation way: asynchronizaton
-                    paramList:  2 elements.
-                                1st is the NSNumber(int), which is the AR-pen ID.
-                                2nd is the QPointFloat, wihch is the point on your move path. The value is  normalized(0~1), and bases on screen coordination.
-                    @return:   no XYCE_STATUS.pData is needed.
- 
-                QCAM_OP_ARPEN_DRAW_END
-                    Operation way:  asynchronizaton
-                    paramList:      1 element. It's NSNumber(int), which is the AR-pen ID.
-                    @return:        no XYCE_STATUS.pData is needed.
- 
-                QCAM_OP_UPDATE_DISPLAY
-                     Operation way:  asynchronizaton
-                     paramList:      Every element should be the QCamDisplayContext*. Every QCamDisplayContext is correspond to the preview layout, and CE will perform
-                                     the display update one by one, and hold preview layout according to the last QCamDisplayContext in list.
+                
                      @return:        no XYCE_STATUS.pData is needed.
 
  */
 - (MRESULT)performOperation : (MDWord)opType
                     opParam : (NSArray*)paramList;
 
-
+- (MVoid)SetFaceDTAdapter : (MVoid*)pAdapter;
 /*!
     @brief  perform class operation
     @param  opType

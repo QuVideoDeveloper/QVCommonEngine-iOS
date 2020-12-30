@@ -24,6 +24,8 @@ MVoid QVET_TransformToRect(MRECT *pRect, QVET_3D_TRANSFORM transform, MFloat *pf
 
 MRESULT QVET_GetWMTagFromFile(MTChar *videoFile, MTChar *tag, MDWord bufLen);
 
+MRESULT QVET_PreprocessImg(MHandle pSessionContext, const char* inputPath, const char* outputPath, const PreprocessArgs* args);
+
 MDWord QVET_GetEngineVersion();
 
 MRESULT QVET_GetTRCLyricsInfo(MTChar *pszTRC, QVET_TRCFILE_DECRYPTOR *pTRCDec, QVET_TRC_LYRICS_INFO* pInfo/*out*/);
@@ -140,6 +142,7 @@ MRESULT AMVE_GetVHWDecoderCount(MHandle hSessionContext,MLong* plCount);
 MRESULT AMVE_GetHWCodecCap(MTChar* pszXMLFile, MDWord* pdwMAXHWDecCount,MBool* pbEncSupported,
 	                                 MDWord* pdwVImportFormat,MBool* bBetaTestedFlag,MTChar* pszGPURender);
 
+MRESULT	AMVE_GetGPURender(MTChar* pszGPURender);
 
 MRESULT AMVE_GetAnimatedFrameInfo(MHandle hSessionCtx, MTChar* szFrameFile, MSIZE* pBGSize, QVET_ANIMATED_FRAME_TEMPLATE_INFO* pInfo);
 
@@ -149,6 +152,10 @@ MRESULT AMVE_GetAnimatePointSettings(MHandle hEffect,MSIZE* pBGSize,MVoid** ppSe
 
 MRESULT AMVE_GetPasterFacialInfo(MHandle hSessionCtx, MTChar* szFrameFile,AMVE_PASTER_FACIAL_INFO* pFacialInfo);
 MRESULT QVET_GetTemplateParamData(MHandle hSessionCtx, MTChar* szTemplateFile, MLong lCfgIndex, MSIZE* pResolution, AMVE_USER_DATA_TYPE* pTPMData);
+
+MRESULT AMVE_EffectGetFilterDuration(MTChar * szFilePath,MSIZE * pBgSzie,MDWord * pdwDuration);
+
+
 
 MVoid	QVET_PrintWin32DebugLog(MTChar *format, ...);
 //macro for session register
@@ -330,6 +337,12 @@ MRESULT AMVE_EffectUpdateTrajectory(MHandle hEffect, MDWord trIdx, QVET_TRAJECTO
 MRESULT AMVE_EffectRemoveTrajectory(MHandle hEffect, MDWord trIdx);
 MRESULT AMVE_EffectRemoveAllTrajectory(MHandle hEffect);
 
+MRESULT AMVE_EffectStartLayerPaintLine(MHandle hEffect, MVoid *pPenType);
+MRESULT AMVE_EffectAppendLayerLinePoints(MHandle hEffect, MVoid *hVecPointsList);
+MRESULT AMVE_EffectEndLayerPaintShapeLine(MHandle hEffect);
+MDWord AMVE_EffectLayerPaintUndo(MHandle hEffect);
+MDWord AMVE_EffectLayerPaintRedo(MHandle hEffect);
+
 MRESULT AMVE_EffectGetKeyFrameTransformValue(MHandle hEffect, MDWord dwTimestamp, QVET_KEYFRAME_TRANSFORM_VALUE* pValue);
 MRESULT AMVE_EffectGetKeyFrameTransformPosValue(MHandle hEffect, MDWord dwTimestamp, QVET_KEYFRAME_TRANSFORM_POS_VALUE* pValue);
 MRESULT AMVE_EffectGetKeyFrameTransformRotationValue(MHandle hEffect, MDWord dwTimestamp, QVET_KEYFRAME_TRANSFORM_ROTATION_VALUE* pValue);
@@ -358,6 +371,8 @@ MVoid   AMVE_EffectKeyFrame2DConvertTo3DTransform(const MRECT rcOrignRect,
 												const QVET_KEYFRAME_TRANSFORM_SCALE_DATA *pScaleData,
 												const QVET_KEYFRAME_TRANSFORM_ROTATION_DATA *pRotation,
 												QVET_KEYFRAME_COMMON_DATA_LIST *pTransformList);//2D转3D关键帧用的
+
+MRESULT AMVE_EffectGetTextAttachInfoById(MHandle hEffect, MInt64 lltemplateId, enum QTextAttachType* outType, MDWord* outDesignTime);
 
 //The interfaces for stream
 MRESULT AMVE_StreamOpen(AMVE_STREAM_SOURCE_TYPE* pSource, AMVE_STREAM_PARAM_TYPE* pParam, MHandle *phStream);

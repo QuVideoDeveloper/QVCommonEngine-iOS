@@ -964,6 +964,7 @@ Value type:
 
 #define MV2_CFG_RECORDER_CE_TIME_STAMP	(MV2_CFG_RECORDER_BASE+11)
 
+#define MV2_CFG_RECORDER_CE_AUDIO_MUTE	(MV2_CFG_RECORDER_BASE+12)
 
 //////////configuration type ID for media stream//////////////
 
@@ -3310,7 +3311,10 @@ Note:
 #define MV2_CFG_CUSTOM_TRANSITION_FPS                    (MV2_CFG_CUSTOM_BASE + 109)
 
 #define MV2_CFG_CUSTOM_REMAIN_MEM_QUERY                  (MV2_CFG_CUSTOM_BASE + 110)
+
+#define MV2_CFG_CUSTOM_EFFECT_PREPARE_THREAD             (MV2_CFG_CUSTOM_BASE + 111)
  
+#define MV2_CFG_CUSTOM_PLAYER_3D_TRANSFORM            (MV2_CFG_CUSTOM_BASE + 112)
 #endif	//_MV2CONFIG_H_
 
 

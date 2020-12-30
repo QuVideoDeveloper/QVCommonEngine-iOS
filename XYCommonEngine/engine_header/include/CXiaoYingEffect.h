@@ -5,6 +5,7 @@
 *Description: Define XiaoYing Effect  API.
 *
 */
+
 @interface CXiaoYingPipStoryboardInfo : NSObject {
 @public
     NSString *pProjectPath; //CXiaoYingKeyFrameTransformValue
@@ -431,6 +432,19 @@ typedef struct _tagCXYEffectTextAttachFileInfo
 - (QVET_KEYFRAME_TRANSFORM_SCALE_DATA ) ocKeyframeScaleToCFrameScale:(CXiaoYingKeyFrameTransformScaleData*) src;
 
 + (MRESULT) getTextAttachFileInfo : (const MTChar*) pFilePath
-                                  : (CXYEffectTextAttachFileInfo* ) pFileInfo;
+                         fileInfo : (CXYEffectTextAttachFileInfo* ) pFileInfo;
+- (MRESULT) getTextAttachFileInfoById : (MLong)ltemplateId
+							 fileInfo : (CXYEffectTextAttachFileInfo* ) pFileInfo;
+
+- (MRESULT) startLayerPaintLine : (CXiaoYingDrawLayerPaintPen *)pType;
+//
+- (MRESULT) appendLayerLinePoint : (MPOINT_FLOAT) point;
+
+- (MRESULT) endLayerPaintLine;
+
+- (MDWord) LayerPaintUndo;//返回的是当前还有多少个线条
+- (MDWord) LayerPaintRedo;
+- (MDWord) LayerPaintUndoCount;
+- (MDWord) LayerPaintRedoCount;
 @end // CXiaoYingEffect 
 
